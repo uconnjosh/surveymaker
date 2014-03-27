@@ -109,16 +109,17 @@ def view_surveys
   selected_survey = Survey.find(input)
   selected_survey.questions.each do |this_question|
     puts "#{this_question.id}.....#{this_question.name}"
-    # possible_responses = AnswerOption.where({:question_id => this_question.id})
-    # responses.each_with_index do |r, index|
-    #   puts "#{index+1}....#{r.name}"
-    #   total_responses = responses.length
-    #   numerator = Response.where({:answer_option_id => r.id})
-    #   # numerator = Response.find(responses.id)
-    #   numerator = numerator.length
-    #   percentage = numerator / total_responses
-    #   puts percentage
-    # end
+    possible_responses = AnswerOption.where({:question_id => this_question.id})
+    possible_responses.each_with_index do |r, index|
+      puts "#{index+1}....#{r.name}"
+      total_responses = possible_responses.length.to_f
+      numerator = Response.where({:answer_option_id => r.id})
+      numerator = numerator.length.to_f
+      percentage = (numerator / total_responses)
+      percentage = percentage * 100
+      percentage = percentage.round(2)
+      puts "This has been chosen #{percentage}% of the time"
+    end
   end
 # rescue
 #   puts "Looks like that survery isn't created yet, please pick another one"
